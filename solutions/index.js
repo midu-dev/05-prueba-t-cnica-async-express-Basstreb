@@ -99,6 +99,6 @@ export async function leerArchivos () {
 }
 
 // # EJERCICIO 5
-export async function delay () {
-  // ...
+export function delay (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
