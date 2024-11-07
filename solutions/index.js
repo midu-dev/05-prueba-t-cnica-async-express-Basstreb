@@ -87,12 +87,15 @@ export function procesarArchivoPromise () {
 }
 
 // # EJERCICIO 4
-export function leerArchivos () {
-  const archivo1 = fs.readSync('archivo1.txt', 'utf8')
-  const archivo2 = fs.readSync('archivo2.txt', 'utf8')
-  const archivo3 = fs.readSync('archivo3.txt', 'utf8')
-
-  return `${archivo1} ${archivo2} ${archivo3}`
+export async function leerArchivos () {
+  try {
+    const archivos = ['archivo1.txt', 'archivo2.txt', 'archivo3.txt']
+    const contenido = await Promise.all(archivos.map(archivo => fs.promises.readFile(archivo, 'utf8')))
+    return contenido.map(texto => texto.trim()).join(' ')
+  } catch (error) {
+    console.error('Error al leer los archivos:', error)
+    throw error
+  }
 }
 
 // # EJERCICIO 5
