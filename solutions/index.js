@@ -1,18 +1,20 @@
-import net from 'node:net'
 import fs from 'node:fs'
+import net from 'node:net'
 
 // # EJERCICIO 1
-export const ping = (ip) => {
+export const ping = (ip, callback) => {
   const startTime = process.hrtime()
 
   const client = net.connect({ port: 80, host: ip }, () => {
+    const endTime = process.hrtime(startTime)
+    const time = endTime[0] * 1000 + endTime[1] / 1e6
     client.end()
-    return { time: process.hrtime(startTime), ip }
+    callback(null, { time, ip })
   })
 
   client.on('error', (err) => {
-    throw err
     client.end()
+    callback(err, null)
   })
 }
 
