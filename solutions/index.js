@@ -24,10 +24,12 @@ ping('midu.dev', (err, info) => {
 })
 
 // # EJERCICIO 2
-export function obtenerDatosPromise (callback) {
-  setTimeout(() => {
-    callback(null, { data: 'datos importantes' })
-  }, 2000)
+export function obtenerDatosPromise () {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ data: 'datos importantes' })
+    }, 2000)
+  })
 }
 
 // # EJERCICIO 3
