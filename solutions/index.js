@@ -33,31 +33,57 @@ export function obtenerDatosPromise () {
 }
 
 // # EJERCICIO 3
-export function procesarArchivo () {
+/* La función procesarArchivo lee un archivo llamado input.txt, transforma el contenido en mayúsculas y luego guarda el resultado en output.txt después de una pausa de 1 segundo. Si ocurre un error al leer o escribir el archivo, se registra en la consola. */
+export function procesarArchivo (callback) {
   fs.readFile('input.txt', 'utf8', (error, contenido) => {
     if (error) {
       console.error('Error leyendo archivo:', error.message)
-      return false
+      if (callback) callback(error)
+      return
     }
 
     setTimeout(() => {
       const textoProcesado = contenido.toUpperCase()
 
-      fs.writeFile('output.txt', textoProcesado, error => {
+      fs.writeFile('output.txt', textoProcesado, (error) => {
         if (error) {
           console.error('Error guardando archivo:', error.message)
-          return false
+          if (callback) callback(error)
+          return
         }
 
         console.log('Archivo procesado y guardado con éxito')
-        return true
+        if (callback) callback(null, 'Archivo procesado y guardado con éxito')
       })
     }, 1000)
   })
 }
 
 export function procesarArchivoPromise () {
-  // tu código aquí
+  return new Promise((resolve, reject) => {
+    fs.readFile('input.txt', 'utf8', (error, contenido) => {
+      if (error) {
+        console.error('Error leyendo archivo:', error.message)
+        reject(error)
+        return
+      }
+
+      setTimeout(() => {
+        const textoProcesado = contenido.toUpperCase()
+
+        fs.writeFile('output.txt', textoProcesado, (error) => {
+          if (error) {
+            console.error('Error guardando archivo:', error.message)
+            reject(error)
+            return
+          }
+
+          console.log('Archivo procesado y guardado con éxito')
+          resolve('Archivo procesado y guardado con éxito')
+        })
+      }, 1000)
+    })
+  })
 }
 
 // # EJERCICIO 4
